@@ -11,7 +11,7 @@ module Payoneer
         p6: redirect_url,
         p8: redirect_time,
         p9: Payoneer.configuration.auto_approve_sandbox_accounts?,
-        p10: true, # returns an xml response
+        p10: true, # Returns an xml response.
       }
 
       response = Payoneer.make_api_request(SIGNUP_URL_API_METHOD_NAME, payoneer_params)
@@ -32,7 +32,7 @@ module Payoneer
       response = Payoneer.make_api_request(PAYEE_REPORT_API_METHOD_NAME, payoneer_params)
 
       if success?(response)
-        Response.new_ok_response(response['Token'])
+        Response.new_ok_response(response[response.keys.first]['payee']) # Top level key can be "Prepaid" or ...
       else
         Response.new(response['Code'], response['Description'])
       end
