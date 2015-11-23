@@ -3,6 +3,7 @@ require 'uri'
 module Payoneer
   class Payee
     SIGNUP_URL_API_METHOD_NAME = 'GetToken'
+    PAYEE_REPORT_API_METHOD_NAME = 'GetSinglePayeeReport'
 
     def self.signup_url(payee_id, redirect_url: nil, redirect_time: nil)
       payoneer_params = {
@@ -14,6 +15,21 @@ module Payoneer
       }
 
       response = Payoneer.make_api_request(SIGNUP_URL_API_METHOD_NAME, payoneer_params)
+
+      if success?(response)
+        Response.new_ok_response(response['Token'])
+      else
+        Response.new(response['Code'], response['Description'])
+      end
+    end
+
+    def self.payee_report(payee_id)
+      payoneer_params = {
+        p4: payee_id,
+        p10: true
+      }
+
+      response = Payoneer.make_api_request(PAYEE_REPORT_API_METHOD_NAME, payoneer_params)
 
       if success?(response)
         Response.new_ok_response(response['Token'])
