@@ -1,5 +1,4 @@
-#Payoneer Ruby bindings
-#API spec at https://github.com/teespring/payoneer-ruby
+# Ruby Bindings
 require 'rest-client'
 require 'active_support'
 require 'active_support/core_ext'
@@ -27,13 +26,9 @@ module Payoneer
 
   def self.make_api_request(method_name, params = {})
     configuration.validate!
-
     request_params = default_params.merge(mname: method_name).merge(params)
-
     response = RestClient.post(configuration.api_url, request_params)
-
     fail Errors::UnexpectedResponseError.new(response.code, response.body) unless response.code == 200
-
     hash_response = Hash.from_xml(response.body)
     inner_content = hash_response.values.first
     inner_content

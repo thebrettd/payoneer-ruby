@@ -14,7 +14,6 @@ module Payoneer
       }
 
       response = Payoneer.make_api_request(CREATE_PAYOUT_API_METHOD_NAME, payoneer_params)
-
       Response.new(response['Status'], response['Description'])
     end
   end
