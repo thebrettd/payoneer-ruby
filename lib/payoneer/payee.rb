@@ -34,7 +34,7 @@ module Payoneer
 
       if success?(response)
         puts response.inspect
-        Response.new_ok_response(response['PayeeId'])
+        Response.new_ok_response(response['TransferMethod'])
       else
         Response.new(response['Code'], response['Description'])
       end
@@ -48,7 +48,7 @@ module Payoneer
       response = Payoneer.make_api_request(REGISTER_PAYEE_API_METHOD_NAME, payoneer_params)
 
       if success?(response)
-        Response.new_ok_response(response['Token'])
+        Response.new_ok_response(response['PayeeId'])
       else
         Response.new(response['Code'], response['Description'])
       end
