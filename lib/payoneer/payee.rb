@@ -33,19 +33,43 @@ module Payoneer
       response = Payoneer.make_api_request(REGISTER_PAYEE_FORMAT_API_METHOD_NAME, payoneer_params)
 
       if success?(response)
-        puts response.inspect
         Response.new_ok_response(response['TransferMethod'])
       else
         Response.new(response['Code'], response['Description'])
       end
     end
 
-    def self.register_payee(payee)
-      payoneer_params = {
-        Xml: payee.to_xml
-      }
-
-      response = Payoneer.make_api_request(REGISTER_PAYEE_API_METHOD_NAME, payoneer_params)
+    # Usage:
+    # Payoneer::Payee.register_payee({
+    #   apuid: ...,
+    #   RegistrationMode: '0',
+    #   firstName: ...,
+    #   lastName: ...,
+    #   dateOfBirth: ...,
+    #   address1: ...,
+    #   address2: ...,
+    #   city: ...,
+    #   country: ...,
+    #   state: ...,
+    #   zipCode: ...,
+    #   phone: ...,
+    #   email: ...,
+    #   TransferMethod: {
+    #     Type: '7',
+    #     Details: {
+    #       Country: 'US',
+    #       Currency: 'USD',
+    #       BankAccountType: '1',
+    #       BankName: ...,
+    #       RoutingNumber: ...,
+    #       AccountName: ...,
+    #       AccountType: ...,
+    #       AccountNumber: ...
+    #     }
+    #   }
+    # }.to_xml(root: 'Details'))
+    def self.register_payee(xml)
+      response = Payoneer.make_api_request(REGISTER_PAYEE_API_METHOD_NAME, { Xml: xml })
 
       if success?(response)
         Response.new_ok_response(response['PayeeId'])
