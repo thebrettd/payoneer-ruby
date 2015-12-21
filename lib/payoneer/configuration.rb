@@ -8,9 +8,12 @@ module Payoneer
 
     attr_accessor :environment, :partner_id, :partner_username, :partner_api_password, :auto_approve_sandbox_accounts
 
-    def initialize
-      @environment = DEVELOPMENT_ENVIRONMENT
-      @auto_approve_sandbox_accounts = true
+    def initialize(id:, username:, api_password:, environment: DEVELOPMENT_ENVIRONMENT, auto_approve_sandbox_accounts: true)
+      @partner_id = id
+      @partner_username = username
+      @partner_api_password = api_password
+      @environment = environment
+      @auto_approve_sandbox_accounts = auto_approve_sandbox_accounts
     end
 
     def production?

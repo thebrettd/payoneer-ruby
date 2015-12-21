@@ -15,30 +15,17 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-configuration = Payoneer::Configuration.new do |c|
-  c.environment = 'production'
-  c.partner_id = '<payoneer_account_id>'
-  c.partner_username = '<payoneer_account_username>'
-  c.partner_api_password = '<payoneer_api_password>'
-end
-
+configuration = Payoneer::Configuration.new(id: '...', username: '...', api_password: '...')
 client = Payoneer::Client.new(configuration)
-
-response = client.status
-response.code
-=> "000"
-response.body
-=> "Echo OK - All systems are up"
-response.ok?
-=> true
+client.status
+=> #<Payoneer::Response:0x007f977d4882c8
+ @body="Echo Ok - All systems are up.",
+ @code="000">
 
 client.payee_signup_url('payee_1')
-client.payee_signup_url('payee_1', redirect_url: 'http://<redirect_url>.com')
-client.payee_signup_url('payee_1', redirect_url: 'http://<redirect_url>.com', redirect_time: 10)
-
-response = client.payee_signup_url('payee_1')
-response.ok?
-signup_url = response.body
+=> #<Payoneer::Response:0x007f848bb76f08
+ @body="https://payouts.sandbox.payoneer.com/partners/lp.aspx?token=f119cbf61614437bb29f15b5214d7c9d30FC9AC611",
+ @code="000">
 
 response = Payoneer::Payout.create(
   program_id: '<payoneer_program_id>',

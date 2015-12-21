@@ -9,20 +9,20 @@ module Payoneer
     end
 
     def status
-      response = Payoneer.make_api_request('Echo')
+      response = api_request('Echo')
       Response.new(response['Status'], response['Description'])
     end
 
-    def self.payee_signup_url(payee_id, redirect_url: nil, redirect_time: nil)
+    def payee_signup_url(payee_id, redirect_url: nil, redirect_time: nil)
       payoneer_params = {
         p4: payee_id,
         p6: redirect_url,
         p8: redirect_time,
-        p9: Payoneer.configuration.auto_approve_sandbox_accounts?,
+        p9: configuration.auto_approve_sandbox_accounts?,
         p10: true
       }
 
-      response = Payoneer.make_api_request('GetToken', payoneer_params)
+      response = api_request('GetToken', payoneer_params)
 
       if success?(response)
         Response.new_ok_response(response['Token'])
@@ -31,14 +31,8 @@ module Payoneer
       end
     end
 
-    def self.payee_register_format(type, country, currency)
-      payoneer_params = {
-        Type: type, # 1, 2, 3, ..., 7
-        Country: country, # 'US'
-        Currency: currency # 'USD'
-      }
-
-      response = Payoneer.make_api_request('GetRegisterPayeeFormat', payoneer_params)
+    def payee_register_format(type = '7', country = 'US', currency = 'USD')
+      response = api_request('GetRegisterPayeeFormat', { Type: type, Country: country, Currency: currency })
 
       if success?(response)
         Response.new_ok_response(response['TransferMethod'])
@@ -47,8 +41,8 @@ module Payoneer
       end
     end
 
-    def self.payee_register(xml)
-      response = Payoneer.make_api_request('RegisterPayee', { Xml: xml })
+    def payee_register(xml)
+      response = api_request('RegisterPayee', { Xml: xml })
 
       if success?(response)
         Response.new_ok_response(response['PayeeId'])
@@ -57,16 +51,21 @@ module Payoneer
       end
     end
 
-    def self.payee_report(payee_id)
-      payoneer_params = {
-        p4: payee_id,
-        p10: true
-      }
-
-      response = Payoneer.make_api_request('GetSinglePayeeReport', payoneer_params)
+    def payee_report(payee_id)
+      response = api_request('GetSinglePayeeReport', { p4: payee_id, p10: true })
 
       if success?(response)
-        Response.new_ok_response(response[response.keys.first]['payee']) # Top level key can be "Prepaid" or ...
+        Response.new_ok_response(response[response.keys.first]['payee'])
+      else
+        Response.new(response['Code'], response['Description'])
+      end
+    end
+
+    def payee_details(payee_id)
+      response = api_request('GetPayeeDetails', { p4: payee_id, p10: true })
+
+      if success?(response)
+        Response.new_ok_response(response)
       else
         Response.new(response['Code'], response['Description'])
       end
@@ -82,7 +81,7 @@ module Payoneer
         p9: payment_date.strftime('%m/%d/%Y %H:%M:%S'),
         Currency: currency
       }
-      response = Payoneer.make_api_request('PerformPayoutPayment', payoneer_params)
+      response = api_request('PerformPayoutPayment', payoneer_params)
       Response.new(response['Status'], response['Description'])
     end
 
