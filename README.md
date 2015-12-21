@@ -7,27 +7,24 @@ gem 'payoneer-ruby'
 ```
 
 And then execute:
-
-    $ bundle
+  $ bundle
 
 Or install it yourself as:
-
-    $ gem install payoneer-ruby
+  $ gem install payoneer-ruby
 
 ## Usage
 
 ```ruby
-# Configuration
-Payoneer.configure do |c|
+configuration = Payoneer::Configuration.new do |c|
   c.environment = 'production'
   c.partner_id = '<payoneer_account_id>'
   c.partner_username = '<payoneer_account_username>'
   c.partner_api_password = '<payoneer_api_password>'
-  c.auto_approve_sandbox_accounts = true # if you want sandbox accounts to be automatically approved after signup
 end
 
-# Check Payoneer API status. See Payoneer documentation for possible error codes
-response = Payoneer::System.status
+client = Payoneer::Client.new(configuration)
+
+response = client.status
 response.code
 => "000"
 response.body
@@ -35,15 +32,14 @@ response.body
 response.ok?
 => true
 
-# Get Payee Signup URL
-Payoneer::Payee.signup_url('payee_1')
-Payoneer::Payee.signup_url('payee_1', redirect_url: 'http://<redirect_url>.com')
-Payoneer::Payee.signup_url('payee_1', redirect_url: 'http://<redirect_url>.com', redirect_time: 10) #seconds
+client.payee_signup_url('payee_1')
+client.payee_signup_url('payee_1', redirect_url: 'http://<redirect_url>.com')
+client.payee_signup_url('payee_1', redirect_url: 'http://<redirect_url>.com', redirect_time: 10)
 
-response = Payoneer::Payee.signup_url('payee_1')
-signup_url = response.body if response.ok?
+response = client.payee_signup_url('payee_1')
+response.ok?
+signup_url = response.body
 
-# Perform Payout for Payee
 response = Payoneer::Payout.create(
   program_id: '<payoneer_program_id>',
   payment_id: 'payment_1',
@@ -53,8 +49,7 @@ response = Payoneer::Payout.create(
   payment_date: Time.now, #defaults to Time.now
   currency: 'USD' #defaults to USD
 )
-
-p 'Payout created!' if response.ok?
+response.ok?
 ```
 
 ## Development
@@ -62,11 +57,3 @@ p 'Payout created!' if response.ok?
 After checking out the repo, run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/payoneer-ruby/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request

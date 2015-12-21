@@ -1,15 +1,16 @@
 module Payoneer
   class Configuration
+
     DEVELOPMENT_ENVIRONMENT = 'development'
-    PRODUCTION_ENVIRONMENT = 'production'
-    DEVELOPMENT_API_URL = 'https://api.sandbox.payoneer.com/Payouts/HttpApi/API.aspx?'
-    PRODUCTION_API_URL = 'https://api.payoneer.com/Payouts/HttpApi/API.aspx?'
+    PRODUCTION_ENVIRONMENT  = 'production'
+    DEVELOPMENT_API_URL     = 'https://api.sandbox.payoneer.com/Payouts/HttpApi/API.aspx?'
+    PRODUCTION_API_URL      = 'https://api.payoneer.com/Payouts/HttpApi/API.aspx?'
 
     attr_accessor :environment, :partner_id, :partner_username, :partner_api_password, :auto_approve_sandbox_accounts
 
     def initialize
       @environment = DEVELOPMENT_ENVIRONMENT
-      @auto_approve_sandbox_accounts = false
+      @auto_approve_sandbox_accounts = true
     end
 
     def production?
@@ -27,5 +28,6 @@ module Payoneer
     def validate!
       fail Errors::ConfigurationError unless partner_id && partner_username && partner_api_password
     end
+
   end
 end

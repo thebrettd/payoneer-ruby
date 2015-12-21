@@ -1,8 +1,8 @@
 module Payoneer
   module Errors
     class UnexpectedResponseError < StandardError
-      attr_reader :http_status
-      attr_reader :http_body
+
+      attr_reader :http_status, :http_body
 
       def initialize(http_status = nil, http_body = nil)
         @http_status = http_status
@@ -12,6 +12,7 @@ module Payoneer
       def to_s
         "(Status #{http_status}) Unexpected http response code"
       end
+
     end
   end
 end

@@ -1,5 +1,6 @@
 module Payoneer
   class Response
+
     attr_reader :code, :body
 
     OK_STATUS_CODE = '000'
@@ -20,5 +21,6 @@ module Payoneer
     def ==(other)
       code == other.code && body == other.body
     end
+
   end
 end
