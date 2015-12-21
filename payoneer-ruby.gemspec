@@ -1,11 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'payoneer'
 
 Gem::Specification.new do |spec|
   spec.name          = 'payoneer-ruby'
-  spec.version       = Payoneer::VERSION
+  spec.version       = '0.2.0'
   spec.authors       = ['Chris Estreich']
   spec.email         = ['chris@tophatter.com']
 
