@@ -1,17 +1,3 @@
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'payoneer-ruby'
-```
-
-And then execute:
-  $ bundle
-
-Or install it yourself as:
-  $ gem install payoneer-ruby
-
 ## Usage
 
 ```ruby
