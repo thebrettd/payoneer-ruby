@@ -32,6 +32,12 @@ module Payoneer
       end
     end
 
+    def payee_edit(xml)
+      api_request('EditTransferMethod', Xml: xml) do |response|
+        response['PayeeId']
+      end
+    end
+
     def payee_details(payee_id)
       api_request('GetPayeeDetails', p4: payee_id, p10: true) do |response|
         response['Payee']
