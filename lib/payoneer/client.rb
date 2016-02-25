@@ -9,9 +9,15 @@ module Payoneer
     end
 
     def status
-      api_request('Echo') do |response|
-        response['Description']
-      end
+      api_request('Echo')
+    end
+
+    def version
+      api_request('GetVersion')
+    end
+
+    def account
+      api_request('GetAccountDetails')
     end
 
     def payee_signup_url(payee_id, redirect_url: nil, redirect_time: nil)
@@ -49,6 +55,12 @@ module Payoneer
         response[response.keys.first]['payee']
       end
     end
+
+    # ChangePayeeID
+    # GetPayeesReport
+    # GetUnclaimedPaymentsXML
+    # GetUnclaimedPaymentsCSV
+    # CancelPayment
 
     def payout(program_id:, payment_id:, payee_id:, amount:, description:, payment_date: Time.now, currency: 'USD')
       amount       = '%.2f' % amount
