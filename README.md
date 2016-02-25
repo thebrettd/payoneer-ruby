@@ -1,8 +1,13 @@
 ## Usage
 
 ```ruby
-configuration = Payoneer::Configuration.new(id: '...', username: '...', api_password: '...', environment: 'development')
-client = Payoneer::Client.new(configuration)
+
+client = Payoneer::Client.new(Payoneer::Configuration.new(
+  id: '...',
+  username: '...',
+  api_password: '...',
+  environment: 'development'
+))
 
 client.status.body
 => "Echo Ok - All systems are up."

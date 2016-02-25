@@ -56,6 +56,10 @@ module Payoneer
       api_request('PerformPayoutPayment', p4: program_id, p5: payment_id, p6: payee_id, p7: amount, p8: description, p9: payment_date, Currency: currency)
     end
 
+    def payout_details(payee_id:, payment_id:)
+      api_request('GetPaymentStatus', p4: payee_id, p5: payment_id)
+    end
+
     private
 
     def api_request(method_name, params = {}, &block)
