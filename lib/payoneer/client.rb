@@ -46,7 +46,7 @@ module Payoneer
 
     def payee_details(payee_id)
       api_request('GetPayeeDetails', p4: payee_id, p10: true) do |response|
-        response['Payee']
+        response['CompanyDetails'].present? ? response['Payee'].merge(response['CompanyDetails']) : response['Payee']
       end
     end
 
