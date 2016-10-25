@@ -56,7 +56,10 @@ module Payoneer
       end
     end
 
-    # ChangePayeeID
+    def change_payee(old_payee_id:, new_payee_id:)
+      api_request('ChangePayeeId', p4: old_payee_id, p5: new_payee_id)
+    end
+
     # GetPayeesReport
     # GetUnclaimedPaymentsXML
     # GetUnclaimedPaymentsCSV
